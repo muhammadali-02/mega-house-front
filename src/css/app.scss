@@ -1,0 +1,127 @@
+// app global css in SCSS form
+
+//      Gradient colors
+.gradient-light-right-1 {
+  background: linear-gradient(to right, rgba(251,194,235,0.9), rgba(166,193,238,0.9))
+}
+.gradient-light-left-1 {
+  background: linear-gradient(to left, rgba(251,194,235,0.9), rgba(166,193,238,0.9))
+}
+.gradient-dark-right-1 {
+  background: linear-gradient(to right, rgb(157, 97, 139, 0.9), rgb(59, 97, 148, 0.9))
+}
+.gradient-dark-left-1 {
+  background: linear-gradient(to left, rgba(157, 97, 139, 0.9), rgba(59, 97, 148, 0.9))
+}
+
+
+//       Radius
+.header-border-radius {
+  border-radius: 0 0 15px 15px
+}
+.footer-border-radius {
+  border-radius: 15px 15px 0 0
+}
+.border-radius-10 {
+  border-radius: 10px;
+}
+.border-radius-15 {
+  border-radius: 15px;
+}
+.border-radius-20 {
+  border-radius: 20px;
+}
+
+//      Main Backgroud
+//.backgroud {
+//  background-size: 100%;
+//  background: fixed;
+//  //background-image: url('https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171__480.jpg');
+//  //background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH9_NdMdY8wbv6MjOB9LE0QbGFSsfflUk2EO2iRDYVMNcPcjxw7DqHnQCGGjX5FQ9js4c&usqp=CAU');
+//  background-image: url('https://img.freepik.com/free-vector/gradient-white-background-with-wavy-lines_79603-2166.jpg?w=1060&t=st=1684824892~exp=1684825492~hmac=c9d7e3de8d992035a016e77b8fcf75fcce9a0dcc47622bef8f683f21b606733a');
+//}
+.backgroud {
+  position: relative;
+}
+.backgroud::before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 1;
+  background: url("https://img.freepik.com/free-vector/gradient-white-background-with-wavy-lines_79603-2166.jpg?w=1060&t=st=1684824892~exp=1684825492~hmac=c9d7e3de8d992035a016e77b8fcf75fcce9a0dcc47622bef8f683f21b606733a") no-repeat center center;
+  background-size: cover;
+}
+.backgroud-dark {
+  position: relative;
+  background-color: #000;
+}
+.backgroud-dark::before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.2;
+  background: url("https://img.freepik.com/free-vector/gradient-white-background-with-wavy-lines_79603-2166.jpg?w=1060&t=st=1684824892~exp=1684825492~hmac=c9d7e3de8d992035a016e77b8fcf75fcce9a0dcc47622bef8f683f21b606733a") no-repeat center center;
+  background-size: cover;
+}
+.backgroud-login {
+  position: relative;
+  background-color: #000;
+}
+.backgroud-login::before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.3;
+  background: url("src/assets/login-bg.jpg") no-repeat center center;
+  background-size: cover;
+}
+.backgroud-dark-login {
+  position: relative;
+  background-color: #000;
+}
+.backgroud-dark-login::before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.3;
+  background: url("src/assets/login-bg.jpg") no-repeat center center;
+  background-size: cover;
+}
+.bg-gradient-opacity-l {
+  background: linear-gradient(to left, rgba(9, 115, 252, 0.7), rgba(129, 21, 243, 0.7))
+}
+.bg-gradient-opacity-r {
+  background: linear-gradient(to right, rgba(9, 115, 252, 0.7), rgba(129, 21, 243, 0.7))
+}
+.bg-blue-opacity {
+  background-color: rgba(2, 82, 255, 0.1);
+}
+.bg-green-opacity {
+  background-color: rgb(2, 255, 2, 0.1);
+}
+.bg-red-opacity {
+  background-color: rgba(255, 2, 2, 0.1);
+}
+.drawer-light-bg {
+  background: rgba(228, 233, 239, 0.9);
+}
