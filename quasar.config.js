@@ -65,7 +65,8 @@ module.exports = configure(function (ctx) {
       // analyze: true,
       env: {
         MAIN_API_URL: ctx.dev ? 'http://localhost:8380/api/v.1' : 'https://mega-house-back.onrender.com/api/v.1',
-        BASE_URL: ctx.dev ? 'http://localhost:8381/' : 'https://mega-house-back.onrender.com/'
+        BASE_URL: ctx.dev ? 'http://localhost:8381/' : 'https://mega-house-back.onrender.com/',
+        IS_LOCAL: ctx.dev
       },
       // Options below are automatically set depending on the env, set them if you want to override
       // extractCSS: false,

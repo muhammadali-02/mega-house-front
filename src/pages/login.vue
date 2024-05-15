@@ -31,7 +31,7 @@
           </q-card-section>
           <q-card-section v-else-if="$route.query.code" class="text-center">
             <q-form class="q-mb-sm">
-              <q-input v-model="form.password" :label="$t('fields.password')" :rules="[required]" @keydown.enter="login" :type="isPwd?'password':'text'" clearable lazy-rules outlined dense>
+              <q-input v-model="form.password" :label="$t('fields.password')" :rules="[required]" @keydown.enter="login" :type="isPwd?'password':'text'" lazy-rules outlined dense>
                 <template #append>
                   <q-icon class="cursor-pointer" @click="isPwd=!isPwd" :name="isPwd?'visibility_off':'visibility'"/>
                 </template>
@@ -191,6 +191,11 @@ export default {
         this.loading = false
       })
     }
+  },
+  created() {
+    let can = localStorage.getItem('role')
+    if (!process.env.IS_LOCAL&&!can&&!this.$route.query.code)
+      this.toRegister()
   }
 }
 </script>
