@@ -31,6 +31,7 @@
             <q-badge :color="item.status==='ACTIVE'?'positive':'negative'">{{ item.status }}</q-badge>
           </q-td>
           <q-td class="text-center">
+            <q-btn flat dense round icon="home" class="bg-green-opacity q-mr-sm" color="green"/>
             <q-btn @click="editForm(item)" flat dense round icon="edit" class="bg-blue-opacity q-mr-sm" color="primary"/>
             <q-btn flat dense round icon="delete" class="bg-red-opacity" color="negative">
               <q-popup-proxy>
