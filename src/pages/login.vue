@@ -174,11 +174,9 @@ export default {
           },
           persistent: true,
         }).onOk(() => {
-          this.form = {username: this.$route.query.code, password: this.$route.query.code}
-          this.login()
+          this.$router.push(`/auth/login?code=${this.$route.query.code}`)
         }).onCancel(() => {
-          this.form = {username: this.$route.query.code, password: this.$route.query.code}
-          this.login()
+          this.$router.push(`/auth/login?code=${this.$route.query.code}`)
           this.toRegister()
         });
       }).catch(e => {
