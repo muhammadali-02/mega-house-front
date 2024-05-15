@@ -2,6 +2,7 @@
   <q-card bordered class="border-radius-10">
     <q-toolbar>
       <q-toolbar-title>{{ $t('sidebar.user') }}</q-toolbar-title>
+      <q-input v-model="payload.search" outlined dense class="q-mx-lg" :label="$t('fields.search')"/>
       <q-btn @click="createForm" flat class="bg-green-opacity" color="positive" icon="add" :label="$t('actions.create')"/>
     </q-toolbar>
     <hr class="q-ma-none">
@@ -107,7 +108,8 @@ export default {
       form: {},
       payload: {
         page: 1,
-        limit: 20
+        limit: 20,
+        search: ''
       },
       isPwd: true,
       create: true,

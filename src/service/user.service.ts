@@ -3,7 +3,7 @@ import ApiService from "src/service/api.service";
 const UserService = {
 
   list(data: any) {
-    return ApiService.post(`/user/list`, {page: data.page-1, limit: data.limit});
+    return ApiService.post(`/user/list?search=${data.search}`, {page: data.page-1, limit: data.limit});
   },
   getById(id: any) {
     return ApiService.get(`/user/get-by-id/${id}`);
