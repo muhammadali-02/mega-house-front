@@ -21,7 +21,7 @@
               <q-input v-model="form.lastName" :label="$t('fields.last_name')" :rules="[required]" type="text" lazy-rules outlined dense/>
               <q-input v-model="form.parentName" :label="$t('fields.parent_name')" :rules="[required]" type="text" lazy-rules outlined dense/>
               <q-input v-model="form.phone" :label="$t('fields.phone')" :rules="[required]" type="text" mask="+### ## ###-##-##" lazy-rules outlined dense/>
-              <q-input v-model="form.password" :label="$t('fields.password')" :rules="[required]" :type="isPwd?'password':'text'" clearable lazy-rules outlined dense>
+              <q-input v-model="form.password" :label="$t('fields.password')" :rules="[required]" :type="'number'" clearable lazy-rules outlined dense>
                 <template #append>
                   <q-icon class="cursor-pointer" @click="isPwd=!isPwd" :name="isPwd?'visibility_off':'visibility'"/>
                 </template>
