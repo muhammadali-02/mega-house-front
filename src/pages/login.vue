@@ -10,18 +10,71 @@
           <hr class="q-ma-none">
           <q-card-section class="q-pb-xs">
             <div class="text-center">
-              <q-btn v-if="$route.query.code" to="/auth/login" icon="arrow_back" round dense flat class="float-left"/>
-              <b v-if="$route.query.code" style="font-size: 20px">Ro'yxatdan o'tish</b>
+              <q-btn v-if="$route.query.isRegister&&$route.query.code" to="/auth/login" icon="arrow_back" round dense flat class="float-left"/>
+              <b v-if="$route.query.isRegister&&$route.query.code" style="font-size: 20px">Ro'yxatdan o'tish</b>
               <b v-else style="font-size: 20px">Tizimga kirish</b>
             </div>
           </q-card-section>
-          <q-card-section v-if="$route.query.code">
+          <q-card-section v-if="$route.query.isRegister&&$route.query.code">
             <q-form>
               <q-input v-model="form.firstName" :label="$t('fields.first_name')" :rules="[required]" type="text" lazy-rules outlined dense/>
               <q-input v-model="form.lastName" :label="$t('fields.last_name')" :rules="[required]" type="text" lazy-rules outlined dense/>
               <q-input v-model="form.parentName" :label="$t('fields.parent_name')" :rules="[required]" type="text" lazy-rules outlined dense/>
               <q-input v-model="form.phone" :label="$t('fields.phone')" :rules="[required]" type="text" mask="+### ## ###-##-##" lazy-rules outlined dense/>
               <q-btn @click="register" class="full-width bg-gradient-opacity-l text-white q-mt-sm" :label="$t('actions.send')" :loading="loading" flat dense/>
+            </q-form>
+          </q-card-section>
+          <q-card-section v-else-if="$route.query.code" class="text-center">
+            <q-form class="q-mb-sm">
+              <q-input v-model="form.password" :label="$t('fields.password')" :rules="[required]" @keydown.enter="login" :type="isPwd?'password':'text'" clearable lazy-rules outlined dense>
+                <template #append>
+                  <q-icon class="cursor-pointer" @click="isPwd=!isPwd" :name="isPwd?'visibility_off':'visibility'"/>
+                </template>
+              </q-input>
+              <div class="row q-mb-md">
+                <div class="col">
+                  <q-btn @click="form.password?form.password+=`1`:form.password='1'" class="full-width" style="font-size: 20px" color="deep-purple">1</q-btn>
+                </div>
+                <div class="col q-px-lg">
+                  <q-btn @click="form.password?form.password+=`2`:form.password='2'" class="full-width" style="font-size: 20px" color="deep-purple">2</q-btn>
+                </div>
+                <div class="col">
+                  <q-btn @click="form.password?form.password+=`3`:form.password='3'" class="full-width" style="font-size: 20px" color="deep-purple">3</q-btn>
+                </div>
+              </div>
+              <div class="row q-mb-md">
+                <div class="col">
+                  <q-btn @click="form.password?form.password+=`4`:form.password='4'" class="full-width" style="font-size: 20px" color="deep-purple">4</q-btn>
+                </div>
+                <div class="col q-px-lg">
+                  <q-btn @click="form.password?form.password+=`5`:form.password='5'" class="full-width" style="font-size: 20px" color="deep-purple">5</q-btn>
+                </div>
+                <div class="col">
+                  <q-btn @click="form.password?form.password+=`6`:form.password='6'" class="full-width" style="font-size: 20px" color="deep-purple">6</q-btn>
+                </div>
+              </div>
+              <div class="row q-mb-md">
+                <div class="col">
+                  <q-btn @click="form.password?form.password+=`7`:form.password='7'" class="full-width" style="font-size: 20px" color="deep-purple">7</q-btn>
+                </div>
+                <div class="col q-px-lg">
+                  <q-btn @click="form.password?form.password+=`8`:form.password='8'" class="full-width" style="font-size: 20px" color="deep-purple">8</q-btn>
+                </div>
+                <div class="col">
+                  <q-btn @click="form.password?form.password+=`9`:form.password='9'" class="full-width" style="font-size: 20px" color="deep-purple">9</q-btn>
+                </div>
+              </div>
+              <div class="row q-mb-md">
+                <div class="col">
+                  <q-btn @click="form.password.length?form.password=form.password.substring(0, form.password.length-1):''" class="full-width" style="font-size: 20px" color="negative" icon="backspace"></q-btn>
+                </div>
+                <div class="col q-px-lg">
+                  <q-btn @click="form.password?form.password+=`0`:form.password='0'" class="full-width" style="font-size: 20px" color="deep-purple">0</q-btn>
+                </div>
+                <div class="col">
+                  <q-btn @click="login" class="full-width" style="font-size: 20px" color="positive" icon="check"></q-btn>
+                </div>
+              </div>
             </q-form>
           </q-card-section>
           <q-card-section v-else class="text-center">
@@ -68,6 +121,8 @@ export default {
     },
     async login() {
       this.loading = true
+      if (this.$route.query.code)
+        this.form.username = this.$route.query.code
       await AuthService.login(this.form).then(res => {
         StorageService.setToken(res.data.token)
         StorageService.setUsername(res.data.username)

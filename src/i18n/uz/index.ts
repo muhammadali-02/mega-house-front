@@ -37,7 +37,7 @@ export default {
   },
   fields: {
     username: 'Foydalanuvchi',
-    password: 'Parol',
+    password: 'Pin-Kod',
     required: 'Bu majburiy maydon',
     error_input: "Ma'lumot noto'g'ri kiritilgan !",
     search: 'Qidiruv',
