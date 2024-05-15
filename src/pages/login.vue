@@ -21,6 +21,11 @@
               <q-input v-model="form.lastName" :label="$t('fields.last_name')" :rules="[required]" type="text" lazy-rules outlined dense/>
               <q-input v-model="form.parentName" :label="$t('fields.parent_name')" :rules="[required]" type="text" lazy-rules outlined dense/>
               <q-input v-model="form.phone" :label="$t('fields.phone')" :rules="[required]" type="text" mask="+### ## ###-##-##" lazy-rules outlined dense/>
+              <q-input v-model="form.password" :label="$t('fields.password')" :rules="[required]" :type="isPwd?'password':'text'" clearable lazy-rules outlined dense>
+                <template #append>
+                  <q-icon class="cursor-pointer" @click="isPwd=!isPwd" :name="isPwd?'visibility_off':'visibility'"/>
+                </template>
+              </q-input>
               <q-btn @click="register" class="full-width bg-gradient-opacity-l text-white q-mt-sm" :label="$t('actions.send')" :loading="loading" flat dense/>
             </q-form>
           </q-card-section>
@@ -72,7 +77,7 @@
                   <q-btn @click="form.password?form.password+=`0`:form.password='0'" class="full-width" style="font-size: 20px" color="deep-purple">0</q-btn>
                 </div>
                 <div class="col">
-                  <q-btn @click="login" class="full-width" style="font-size: 20px" color="positive" icon="check"></q-btn>
+                  <q-btn @click="login" :loading="loading" class="full-width" style="font-size: 20px" color="positive" icon="check"></q-btn>
                 </div>
               </div>
             </q-form>
@@ -119,6 +124,12 @@ export default {
     toRegister() {
       window.open('https://t.me/mega_house_bot', '_self');
     },
+    sendMessageTelegram(msg, chatId) {
+      const url = `https://api.telegram.org/bot7091504581:AAHJBiaS85VDTNGWIVyZSixi_4RLe-cCHFM/sendMessage?chat_id=${chatId}&text=${msg}`; // The url to request
+      const xht = new XMLHttpRequest();
+      xht.open("GET", url);
+      xht.send();
+    },
     async login() {
       this.loading = true
       if (this.$route.query.code)
@@ -145,10 +156,9 @@ export default {
     async register() {
       this.loading = true
       this.form.username = this.$route.query.code
-      this.form.password = this.$route.query.code
       this.form.chatId = this.$route.query.code
       await AuthService.register(this.form).then(res => {
-        this.sendMessageTelegram(`${this.form.lastName} ${this.form.firstName} ${this.form.parentName} Mega-House ilovamizga xush kelibsiz, Login = ${this.form.chatId} va Parol = ${this.form.chatId}. Login va Parolingizni xechkimga bermang! Tizizm sozlamalaridan parolingizni o'zgartirib olshingiz mumkun.`, this.form.chatId)
+        this.sendMessageTelegram(`Xurmatli ${this.form.lastName} ${this.form.firstName} ${this.form.parentName} Mega-House ilovamizga xush kelibsiz!`, this.form.chatId)
         this.$q.dialog({
           title: this.$t("actions.confirm"),
           message: 'Ma\'lumotlaringiz muvaffaqiyatli saqlandi, login parolingizni @mega_house_bot orqali telegramingizga yubordik.',
@@ -182,12 +192,6 @@ export default {
       }).finally(f => {
         this.loading = false
       })
-    },
-    sendMessageTelegram(msg, chatId) {
-      const url = `https://api.telegram.org/bot7091504581:AAHJBiaS85VDTNGWIVyZSixi_4RLe-cCHFM/sendMessage?chat_id=${chatId}&text=${msg}`; // The url to request
-      const xht = new XMLHttpRequest();
-      xht.open("GET", url);
-      xht.send();
     }
   }
 }
