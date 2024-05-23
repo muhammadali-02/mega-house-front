@@ -3,6 +3,7 @@
     <q-page-container>
       <q-page class="flex flex-center" :class="$q.dark.isActive?'backgroud-dark-login':'backgroud-login'">
         <q-card bordered :class="$q.dark.isActive?'bg-blue-grey-8':'bg-blue-grey-3'" class="shadow-15 border-radius-10 q-pa-sm" style="width: 400px">
+          <q-btn @click="$q.dark.toggle()" flat round dense :icon="$q.dark.isActive?'light_mode':'dark_mode'" color="warning" class="float-right" style="z-index: 1000000"/>
           <q-card-section class="text-center q-pa-md">
             <q-img v-if="$q.dark.isActive" src="../assets/header-logo-dark.png" alt="logo" :width="$q.screen.xs?'200px':'260px'" class="cursor-pointer"/>
             <q-img v-else src="../assets/header-logo-light.png" alt="logo" :width="$q.screen.xs?'200px':'260px'" class="cursor-pointer"/>
@@ -10,12 +11,12 @@
           <hr class="q-ma-none">
           <q-card-section class="q-pb-xs">
             <div class="text-center">
-              <q-btn v-if="$route.query.isRegister&&$route.query.code" to="/auth/login" icon="arrow_back" round dense flat class="float-left"/>
-              <b v-if="$route.query.isRegister&&$route.query.code" style="font-size: 20px">Ro'yxatdan o'tish</b>
+              <b v-if="$route.query.code&&isRegister" style="font-size: 20px">Ro'yxatdan o'tish</b>
+              <b v-else-if="$route.query.code" style="font-size: 20px">Tizimga kirish</b>
               <b v-else style="font-size: 20px">Tizimga kirish</b>
             </div>
           </q-card-section>
-          <q-card-section v-if="$route.query.isRegister&&$route.query.code">
+          <q-card-section v-if="$route.query.code&&isRegister">
             <q-form>
               <q-input v-model="form.firstName" :label="$t('fields.first_name')" :rules="[required]" type="text" lazy-rules outlined dense/>
               <q-input v-model="form.lastName" :label="$t('fields.last_name')" :rules="[required]" type="text" lazy-rules outlined dense/>
@@ -114,7 +115,16 @@ export default {
     return {
       loading: false,
       isPwd: true,
+      isRegister: true,
       form: {}
+    }
+  },
+  watch: {
+    '$q.dark.isActive': {
+      handler(d) {
+        console.log(d)
+        StorageService.setTheme(d);
+      }
     }
   },
   methods: {
@@ -159,26 +169,7 @@ export default {
       this.form.chatId = this.$route.query.code
       await AuthService.register(this.form).then(res => {
         this.sendMessageTelegram(`Xurmatli ${this.form.lastName} ${this.form.firstName} ${this.form.parentName} Mega-House ilovamizga xush kelibsiz!`, this.form.chatId)
-        this.$q.dialog({
-          title: this.$t("actions.confirm"),
-          message: 'Ma\'lumotlaringiz muvaffaqiyatli saqlandi, login parolingizni @mega_house_bot orqali telegramingizga yubordik.',
-          ok: {
-            label: this.$t("Ok"),
-            dense: true,
-            color: "positive",
-          },
-          cancel: {
-            label: this.$t("actions.view"),
-            dense: true,
-            color: "secondary",
-          },
-          persistent: true,
-        }).onOk(() => {
-          this.$router.push(`/auth/login?code=${this.$route.query.code}`)
-        }).onCancel(() => {
-          this.$router.push(`/auth/login?code=${this.$route.query.code}`)
-          this.toRegister()
-        });
+        window.location.reload()
       }).catch(e => {
         this.$q.notify({
           message: (e.response&&e.response.data&&e.response.data.message)?e.response.data.message:e.message,
@@ -192,10 +183,30 @@ export default {
       })
     }
   },
-  created() {
+  async created() {
     let can = localStorage.getItem('role')
-    if (!process.env.IS_LOCAL&&!can&&!this.$route.query.code)
+    if (!can&&!this.$route.query.code) {
       this.toRegister()
+      return false
+    }
+    this.loading = true
+    await ApiService.get(`/user/get-by-code/${this.$route.query.code}`).then(res => {
+      if (!res.data)
+        this.isRegister = true
+      else
+        this.isRegister = false
+    }).catch(e => {
+      this.isRegister = true
+      this.$q.notify({
+        message: (e.response&&e.response.data&&e.response.data.message)?e.response.data.message:e.message,
+        progress: true,
+        closeBtn: true,
+        type: 'negative',
+        position: 'top-right'
+      })
+    }).finally(f => {
+      this.loading = false
+    })
   }
 }
 </script>
